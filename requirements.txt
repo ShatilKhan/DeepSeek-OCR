@@ -14,3 +14,7 @@ uvicorn
 httpx
 python-dotenv
 python-multipart
+
+# Dataset downloads (Phase 2 baseline evaluation)
+roboflow
+kaggle

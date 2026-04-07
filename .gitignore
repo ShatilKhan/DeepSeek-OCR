@@ -1,1 +1,38 @@
 .env
+.env.local
+.env.*.local
+
+# Local config / caches
+.claude/
+.gradio/
+.playwright-mcp/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+
+# Legacy upstream default output path
+your/
+
+# Validation datasets (not our data, too large for git)
+validation_set/**/images/
+validation_set/**/*.zip
+validation_set/**/*.jpg
+validation_set/**/*.jpeg
+validation_set/**/*.png
+!validation_set/**/manifest.csv
+!validation_set/**/README.md
+!validation_set/README.md
+
+# Evaluation outputs
+eval/results/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
