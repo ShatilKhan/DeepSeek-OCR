@@ -26,7 +26,11 @@ from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+import warnings
 import torch
+import transformers
 from transformers import AutoModel, AutoTokenizer
 import os
 import tempfile
@@ -39,6 +43,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 os.environ["CUDA_VISIBLE_DEVICES"] = os.environ.get("CUDA_VISIBLE_DEVICES", "0")
+
+# Suppress cosmetic HF warnings about position_ids buffer reinitialization.
+# position_ids is a register_buffer in deepencoder.py (just torch.arange), regenerated
+# correctly at load time. The "newly initialized" + "TRAIN this model" warnings are
+# misleading — model works correctly without training.
+transformers.logging.set_verbosity_error()
+warnings.filterwarnings("ignore", message=".*position_ids.*")
+warnings.filterwarnings("ignore", message=".*newly initialized.*")
+warnings.filterwarnings("ignore", message=".*should probably TRAIN.*")
+
+# Single-worker executor for OCR inference. The model runs on one GPU and inference
+# must be serialized — but wrapping in an executor unblocks the asyncio event loop
+# so /health and other endpoints stay responsive while inference runs.
+inference_executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="ocr-inference")
 
 app = FastAPI(title="DeepSeek-OCR API", version="1.0")
 
@@ -116,6 +134,21 @@ def load_model():
     model = model.eval().cuda()
     print("Model loaded!")
 
+def _run_inference_sync(prompt: str, image_path: str) -> str:
+    """Synchronous wrapper around model.infer() — runs in the inference_executor
+    thread so the FastAPI event loop is not blocked during long inferences."""
+    return model.infer(
+        tokenizer,
+        prompt=prompt,
+        image_file=image_path,
+        output_path='/tmp',
+        base_size=1024,
+        image_size=640,
+        crop_mode=True,
+        save_results=False,
+        eval_mode=True
+    )
+
 def clean_repetition(text):
     """Remove repetitive patterns from output"""
     lines = text.split('\n')
@@ -176,16 +209,9 @@ async def ocr_endpoint(
         temp_path = tmp.name
 
     try:
-        result = model.infer(
-            tokenizer,
-            prompt=prompt,
-            image_file=temp_path,
-            output_path='/tmp',
-            base_size=1024,
-            image_size=640,
-            crop_mode=True,
-            save_results=False,
-            eval_mode=True
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(
+            inference_executor, _run_inference_sync, prompt, temp_path
         )
 
         if result:
@@ -257,17 +283,10 @@ async def ocr_and_suggest_endpoint(
         temp_path = tmp.name
 
     try:
-        # Step 1: OCR
-        ocr_result = model.infer(
-            tokenizer,
-            prompt=prompt,
-            image_file=temp_path,
-            output_path='/tmp',
-            base_size=1024,
-            image_size=640,
-            crop_mode=True,
-            save_results=False,
-            eval_mode=True
+        # Step 1: OCR (run in executor to avoid blocking event loop)
+        loop = asyncio.get_event_loop()
+        ocr_result = await loop.run_in_executor(
+            inference_executor, _run_inference_sync, prompt, temp_path
         )
 
         if ocr_result:
