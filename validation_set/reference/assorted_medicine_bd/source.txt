@@ -1,0 +1,6 @@
+Dataset: Assorted Medicine Dataset of Bangladesh (21K medicines)
+Kaggle ID: ahmedshahriarsakib/assorted-medicine-dataset-of-bangladesh
+URL: https://www.kaggle.com/datasets/ahmedshahriarsakib/assorted-medicine-dataset-of-bangladesh
+License: CC0 Public Domain
+Notes: Structured CSV reference database. Used for drug name normalization + fuzzy matching.
+Downloaded via Kaggle API (unzipped in place).

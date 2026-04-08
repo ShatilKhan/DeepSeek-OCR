@@ -17,15 +17,15 @@ __pycache__/
 # Legacy upstream default output path
 your/
 
-# Validation datasets (not our data, too large for git)
-validation_set/**/images/
-validation_set/**/*.zip
-validation_set/**/*.jpg
-validation_set/**/*.jpeg
-validation_set/**/*.png
-!validation_set/**/manifest.csv
-!validation_set/**/README.md
+# Validation datasets — allow-list pattern: block all downloaded data,
+# only commit our own metadata files (provenance + manifests we generate).
+# The download scripts in scripts/ can always rehydrate the data.
+validation_set/**/*
+!validation_set/**/
 !validation_set/README.md
+!validation_set/**/README.md
+!validation_set/**/source.txt
+!validation_set/**/manifest.csv
 
 # Evaluation outputs
 eval/results/

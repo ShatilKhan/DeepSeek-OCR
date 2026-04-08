@@ -1,0 +1,7 @@
+Dataset: RAKIB MAIN medicine extraction dataset (272 images, 236 multi-class with dosages) - forked into sirens-workspace because original medicine-extraction-by-rakib/main-w98xr had no released versions
+URL: https://app.roboflow.com/sirens-workspace/main-w98xr-1ethf
+Workspace: sirens-workspace
+Project: main-w98xr-1ethf
+Version: 1
+License: CC BY 4.0
+Downloaded via Roboflow Python SDK in COCO format.

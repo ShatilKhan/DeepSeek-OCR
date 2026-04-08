@@ -1,0 +1,6 @@
+Dataset: Illegible Medical Prescription Images
+Kaggle ID: mehaksingal/illegible-medical-prescription-images-dataset
+URL: https://www.kaggle.com/datasets/mehaksingal/illegible-medical-prescription-images-dataset
+License: Unknown (check Kaggle page)
+Notes: Full-page handwritten English prescriptions. NO ground truth - for qualitative eval only.
+Downloaded via Kaggle API (unzipped in place).

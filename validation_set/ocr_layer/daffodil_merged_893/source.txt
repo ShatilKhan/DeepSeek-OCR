@@ -1,0 +1,7 @@
+Dataset: Daffodil Intl. University merged prescription dataset (~893 images)
+URL: https://universe.roboflow.com/daffodil-international-university-s5vpr/merged-voyoh
+Workspace: daffodil-international-university-s5vpr
+Project: merged-voyoh
+Version: 1
+License: CC BY 4.0
+Downloaded via Roboflow Python SDK in COCO format.

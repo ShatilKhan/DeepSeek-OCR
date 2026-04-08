@@ -1,0 +1,7 @@
+Dataset: Daffodil Intl. University original doctors prescription (~379 images)
+URL: https://universe.roboflow.com/daffodil-international-university-s5vpr/doctors-prescription
+Workspace: daffodil-international-university-s5vpr
+Project: doctors-prescription
+Version: 1
+License: CC BY 4.0
+Downloaded via Roboflow Python SDK in COCO format.

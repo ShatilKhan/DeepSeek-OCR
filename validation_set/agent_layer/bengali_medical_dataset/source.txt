@@ -1,0 +1,6 @@
+Dataset: Bengali Medical Dataset (patient statements + specialist labels)
+Kaggle ID: shashwatwork/bengali-medical-dataset
+URL: https://www.kaggle.com/datasets/shashwatwork/bengali-medical-dataset
+License: CC BY 4.0
+Notes: Text only. Used for conversational agent / specialist suggestion layer, not OCR.
+Downloaded via Kaggle API (unzipped in place).

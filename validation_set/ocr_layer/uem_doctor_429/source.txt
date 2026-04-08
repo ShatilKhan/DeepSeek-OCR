@@ -1,0 +1,7 @@
+Dataset: University of Engineering and Management doctor prescription (~429 images)
+URL: https://universe.roboflow.com/university-of-engineering-and-management/doctor-prescription
+Workspace: university-of-engineering-and-management
+Project: doctor-prescription
+Version: 6
+License: CC BY 4.0
+Downloaded via Roboflow Python SDK in COCO format.
